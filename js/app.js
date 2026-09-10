@@ -95,11 +95,11 @@ async function handleFormSubmit(e) {
 
   try {
     // 1. Fetch employee from Supabase
-    const { data: funcionario, error: funcError } = await supabase
-      .from('funcionarios')
-      .select('*')
-      .eq('matricula', matricula)
-      .single();
+   const { data: funcionario, error } = await supabase
+  .from('funcionarios')
+  .select('*')
+  .ilike('matricula', matriculaInput.trim())
+  .single();
 
     if (funcError || !funcionario) {
       msgElem.textContent = 'Funcionário não encontrado para a matrícula informada.';
