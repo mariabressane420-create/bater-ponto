@@ -90,16 +90,16 @@ async function handleFormSubmit(e) {
   const matriculaInput = document.getElementById('matricula');
   const tipoSelect = document.getElementById('tipo');
 
-  const matricula = matriculaInput.value.trim();
+  const matricula = matriculaInput.value ? matriculaInput.value.trim() : '';
   const tipo_registro = tipoSelect.value;
 
   try {
     // 1. Fetch employee from Supabase
-   const { data: funcionario, error } = await supabase
-  .from('funcionarios')
-  .select('*')
-  .ilike('matricula', matriculaInput.trim())
-  .single();
+    const { data: funcionario, error: funcError } = await supabase
+      .from('funcionarios')
+      .select('*')
+      .ilike('matricula', matricula)
+      .single();
 
     if (funcError || !funcionario) {
       msgElem.textContent = 'Funcionário não encontrado para a matrícula informada.';
@@ -115,7 +115,7 @@ async function handleFormSubmit(e) {
         {
           funcionario_id: funcionario.id,
           tipo_registro: tipo_registro,
-          data_hora: dataHoraIso
+          horario_previsto: new Date().toTimeString().split(' ')[0]
         }
       ])
       .select();
