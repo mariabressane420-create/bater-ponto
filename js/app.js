@@ -90,7 +90,7 @@ async function handleFormSubmit(e) {
   const matriculaInput = document.getElementById('matricula');
   const tipoSelect = document.getElementById('tipo');
 
-  const matricula = matriculaInput.value.trim();
+  const matricula = matriculaInput.value.trim().toUpperCase();
   const tipo_registro = tipoSelect.value;
 
   try {
@@ -98,7 +98,7 @@ async function handleFormSubmit(e) {
     const { data: funcionario, error: funcError } = await supabase
       .from('funcionarios')
       .select('*')
-      .eq('matricula', matricula)
+      .ilike('matricula', matricula)
       .single();
 
     if (funcError || !funcionario) {
