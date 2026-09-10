@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Ponto Eletrônico</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --spacing: 1rem;
+    }
+    body {
+      padding: var(--spacing);
+    }
+    .main-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .video-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    #webcam {
+      width: 100%;
+      max-width: 320px;
+      height: 240px;
+      background-color: #333;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    #canvas {
+      display: none;
+    }
+    #comprovante {
+      display: none;
+      border: 2px dashed #333;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      background: #fff;
+      color: #000;
+      text-align: center;
+      font-family: monospace;
+    }
+    #comprovante.visible {
+      display: block;
+    }
+    #comprovante img.foto-comprovante {
+      max-width: 150px;
+      height: auto;
+      border-radius: 4px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+    }
+    #qrcode {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+    }
+    #mensagem {
+      margin-top: 1rem;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #comprovante, #comprovante * {
+        visibility: visible;
+      }
+      #comprovante {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="main-container">
+    <h2>Registro de Ponto Eletrônico</h2>
+
+    <div class="video-container">
+      <video id="webcam" autoplay playsinline></video>
+      <canvas id="canvas" width="320" height="240"></canvas>
+      <small id="camera-status">Carregando câmera...</small>
+    </div>
+
+    <form id="ponto-form">
+      <label for="matricula">Matrícula do Funcionário:
+        <input type="text" id="matricula" name="matricula" placeholder="Digite a matrícula" required>
+      </label>
+
+      <label for="tipo">Tipo de Registro:
+        <select id="tipo" name="tipo" required>
+          <option value="ENTRADA">ENTRADA</option>
+          <option value="SAÍDA">SAÍDA</option>
+        </select>
+      </label>
+
+      <button type="submit" id="btn-registrar">Registrar Ponto</button>
+    </form>
+
+    <div id="mensagem"></div>
+
+    <div id="comprovante">
+      <h3>COMPROVANTE DE PONTO</h3>
+      <hr>
+      <p><strong>Empresa:</strong> Ponto Eletrônico System</p>
+      <p><strong>Nome:</strong> <span id="comp-nome"></span></p>
+      <p><strong>Matrícula:</strong> <span id="comp-matricula"></span></p>
+      <p><strong>Cargo:</strong> <span id="comp-cargo"></span></p>
+      <p><strong>Tipo:</strong> <span id="comp-tipo"></span></p>
+      <p><strong>Data/Hora:</strong> <span id="comp-data-hora"></span></p>
+      <div id="comp-foto-container"></div>
+      <div id="qrcode"></div>
+      <hr>
+      <small>Comprovante gerado automaticamente</small>
+    </div>
+  </main>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
